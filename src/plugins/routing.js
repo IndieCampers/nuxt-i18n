@@ -9,6 +9,8 @@ import {
   routesNameSeparator,
   STRATEGIES,
   strategy,
+  undefined_domain_strategy,
+  UNDEFINED_DOMAIN_STRATEGIES,
   vuex
 } from './options'
 
@@ -122,7 +124,7 @@ function switchLocalePath (locale) {
         protocol = window.location.protocol.split(':')[0]
       }
       path = protocol + '://' + lang[LOCALE_DOMAIN_KEY] + path
-    } else {
+    } else if (undefined_domain_strategy !== UNDEFINED_DOMAIN_STRATEGIES.PREFIX)  {
       // eslint-disable-next-line no-console
       console.warn(`[${MODULE_NAME}] Could not find domain name for locale ${locale}`)
     }

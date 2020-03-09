@@ -1,4 +1,4 @@
-const { STRATEGIES, LOCALE_CODE_KEY, LOCALE_DOMAIN_KEY} = require('./constants')
+const { STRATEGIES, LOCALE_CODE_KEY, LOCALE_DOMAIN_KEY, UNDEFINED_DOMAIN_STRATEGIES} = require('./constants')
 const { extractComponentOptions } = require('./components')
 const { getPageOptions, getLocaleCodes } = require('./utils')
 
@@ -8,6 +8,7 @@ exports.makeRoutes = (baseRoutes, {
   routesNameSeparator,
   defaultLocaleRouteNameSuffix,
   strategy,
+  undefined_domain_strategy,
   parsePages,
   pages,
   encodePaths,
@@ -111,7 +112,8 @@ exports.makeRoutes = (baseRoutes, {
       // Add route prefix if needed
       const shouldAddPrefix = (
         // No prefix if app uses different locale domains
-        (!differentDomains || (differentDomains && !domainDefined)) &&
+        (!differentDomains ||
+          (differentDomains && !domainDefined && undefined_domain_strategy === UNDEFINED_DOMAIN_STRATEGIES.PREFIX)) &&
         // No need to add prefix if child's path is relative
         !isChildWithRelativePath &&
         // Skip default locale if strategy is PREFIX_EXCEPT_DEFAULT
