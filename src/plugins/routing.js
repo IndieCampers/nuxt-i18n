@@ -1,6 +1,7 @@
 import './middleware'
 import Vue from 'vue'
 import {
+  baseUrl,
   defaultLocale,
   defaultLocaleRouteNameSuffix,
   LOCALE_CODE_KEY,
@@ -127,6 +128,8 @@ function switchLocalePath (locale) {
     } else if (undefined_domain_strategy !== UNDEFINED_DOMAIN_STRATEGIES.PREFIX)  {
       // eslint-disable-next-line no-console
       console.warn(`[${MODULE_NAME}] Could not find domain name for locale ${locale}`)
+      } else {
+      path = baseUrl + path
     }
   }
   return path
