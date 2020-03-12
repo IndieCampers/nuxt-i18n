@@ -16,7 +16,7 @@ import {
   STRATEGIES,
   strategy,
   UNDEFINED_DOMAIN_STRATEGIES,
-  undefined_domain_strategy,
+  undefinedDomainStrategy,
   vueI18n,
   vuex
 } from './options'
@@ -133,7 +133,7 @@ export default async (context) => {
 
   const loadAndSetLocale = async (newLocale, { initialSetup = false } = {}) => {
     // Abort if different domains option enabled
-    if (!initialSetup && app.i18n.differentDomains && undefined_domain_strategy !== UNDEFINED_DOMAIN_STRATEGIES.PREFIX) {
+    if (!initialSetup && app.i18n.differentDomains && undefinedDomainStrategy !== UNDEFINED_DOMAIN_STRATEGIES.PREFIX) {
       return
     }
 
@@ -217,7 +217,7 @@ export default async (context) => {
   if (app.i18n.differentDomains && domainLocale) {
       locale = domainLocale
   }   else if (strategy !== STRATEGIES.NO_PREFIX &&
-    (!app.i18n.differentDomains|| undefined_domain_strategy === UNDEFINED_DOMAIN_STRATEGIES.PREFIX)) {
+    (!app.i18n.differentDomains|| undefinedDomainStrategy === UNDEFINED_DOMAIN_STRATEGIES.PREFIX)) {
     const routeLocale = getLocaleFromRoute(route)
     locale = routeLocale || locale
   } else if (useCookie) {
