@@ -133,8 +133,17 @@ export default async (context) => {
 
   const loadAndSetLocale = async (newLocale, { initialSetup = false } = {}) => {
     // Abort if different domains option enabled
-    if (!initialSetup && app.i18n.differentDomains && undefinedDomainStrategy !== UNDEFINED_DOMAIN_STRATEGIES.PREFIX) {
+
+    // this is not strict enough, it's letting everything through.
+    if (!initialSetup && app.i18n.differentDomains && (newLocale === "no" || newLocale === "en" || undefinedDomainStrategy !== UNDEFINED_DOMAIN_STRATEGIES.PREFIX)) {
+      console.log("first if, newLocale : " + newLocale)
       return
+    }
+ //TODO cleanup
+    // this is too strict, it's returning everything
+  if (!initialSetup && app.i18n.differentDomains) {
+    console.log("second if, newLocale: " + newLocale)
+   //   return
     }
 
     // Abort if newLocale did not change
@@ -211,13 +220,22 @@ export default async (context) => {
     }
   }
 
+
   let locale = app.i18n.defaultLocale || null
   const domainLocale = getLocaleDomain(app.i18n, req)
 
-  if (app.i18n.differentDomains && domainLocale) {
+  if (app.i18n.differentDomains) {
+    if (domainLocale) {
       locale = domainLocale
-  }   else if (strategy !== STRATEGIES.NO_PREFIX &&
-    (!app.i18n.differentDomains|| undefinedDomainStrategy === UNDEFINED_DOMAIN_STRATEGIES.PREFIX)) {
+    } else if (undefinedDomainStrategy === UNDEFINED_DOMAIN_STRATEGIES.PREFIX) {
+      const routeLocale = getLocaleFromRoute(route)
+      if (
+        routeLocale !== "no"
+      ) {
+        locale = routeLocale || locale
+      }
+    }
+  } else if (strategy !== STRATEGIES.NO_PREFIX) {
     const routeLocale = getLocaleFromRoute(route)
     locale = routeLocale || locale
   } else if (useCookie) {
