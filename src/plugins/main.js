@@ -131,19 +131,18 @@ export default async (context) => {
     }
   }
 
+  const hasDefaultPath = (i18n, locale) => {
+    return ("domain" in i18n.locales.find(l => l.code === locale) ||
+            locale === i18n.defaultLocale)
+  }
+
   const loadAndSetLocale = async (newLocale, { initialSetup = false } = {}) => {
     // Abort if different domains option enabled
 
-    // this is not strict enough, it's letting everything through.
-    if (!initialSetup && app.i18n.differentDomains && (newLocale === "no" || newLocale === "en" || undefinedDomainStrategy !== UNDEFINED_DOMAIN_STRATEGIES.PREFIX)) {
-      console.log("first if, newLocale : " + newLocale)
+    if (!initialSetup && app.i18n.differentDomains &&
+      (hasDefaultPath(app.i18n, newLocale) ||
+        undefinedDomainStrategy !== UNDEFINED_DOMAIN_STRATEGIES.PREFIX)) {
       return
-    }
- //TODO cleanup
-    // this is too strict, it's returning everything
-  if (!initialSetup && app.i18n.differentDomains) {
-    console.log("second if, newLocale: " + newLocale)
-   //   return
     }
 
     // Abort if newLocale did not change
@@ -220,18 +219,15 @@ export default async (context) => {
     }
   }
 
-
-  let locale = app.i18n.defaultLocale || null
   const domainLocale = getLocaleDomain(app.i18n, req)
+  let locale = app.i18n.defaultLocale || null
+  const routeLocale = getLocaleFromRoute(route)
 
   if (app.i18n.differentDomains) {
     if (domainLocale) {
       locale = domainLocale
     } else if (undefinedDomainStrategy === UNDEFINED_DOMAIN_STRATEGIES.PREFIX) {
-      const routeLocale = getLocaleFromRoute(route)
-      if (
-        routeLocale !== "no"
-      ) {
+      if (!hasDefaultPath(app.i18n, routeLocale)) {
         locale = routeLocale || locale
       }
     }
