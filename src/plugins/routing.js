@@ -67,6 +67,7 @@ function localePath (route, locale) {
 
     // Match route without prefix for default locale
     if (locale === defaultLocale && strategy === STRATEGIES.PREFIX_AND_DEFAULT) {
+      if (name.indexOf("___") !== -1) {debugger}
       name += routesNameSeparator + defaultLocaleRouteNameSuffix
     }
 

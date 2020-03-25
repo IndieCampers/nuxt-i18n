@@ -64,6 +64,7 @@ exports.makeRoutes = (baseRoutes, {
 
       // Make localized route name. Name might not exist on parent route if child has same path.
       if (name) {
+        if (name.indexOf("___") !== -1) {debugger}
         localizedRoute.name = name + routesNameSeparator + locale
       }
 
@@ -88,6 +89,7 @@ exports.makeRoutes = (baseRoutes, {
           const defaultRoute = { ...localizedRoute, path }
 
           if (name) {
+             if (localizedRoute.name.indexOf("___") !== -1) {debugger}
             defaultRoute.name = localizedRoute.name + routesNameSeparator + defaultLocaleRouteNameSuffix
           }
 
@@ -102,6 +104,7 @@ exports.makeRoutes = (baseRoutes, {
 
           routes.push(defaultRoute)
         } else if (isChild && isExtraRouteTree && name) {
+          if (localizedRoute.name.indexOf("___") !== -1) {debugger}
           localizedRoute.name += routesNameSeparator + defaultLocaleRouteNameSuffix
         }
       }
