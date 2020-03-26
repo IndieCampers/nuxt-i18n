@@ -140,7 +140,7 @@ export default async (context) => {
     // Abort if different domains option enabled
 
     if (!initialSetup && app.i18n.differentDomains &&
-      (hasDefaultPath(app.i18n, newLocale) ||
+      ((hasDefaultPath(app.i18n, newLocale) && hasDefaultPath(app.i18n, app.i18n.locale)) ||
         undefinedDomainStrategy !== UNDEFINED_DOMAIN_STRATEGIES.PREFIX)) {
       return
     }
