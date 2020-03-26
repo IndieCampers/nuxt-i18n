@@ -120,12 +120,20 @@ exports.makeRoutes = (baseRoutes, {
         !(locale === defaultLocale && strategy === STRATEGIES.PREFIX_EXCEPT_DEFAULT)
       )
 
-      if (shouldAddPrefix) {
+      if (differentDomains && domainDefined) {
+        if (path === '/') {
+          localizedRoute.redirect = path
+        } else {
+          localizedRoute.alias = `/${locale}${path}`
+        }
+      }
+
+      if (shouldAddPrefix && (!domainDefined || path === '/')) {
         path = `/${locale}${path}`
       }
-      if (differentDomains && domainDefined) {
-        localizedRoute.redirect = '/'
-      }
+
+
+
       localizedRoute.path = path
 
       routes.push(localizedRoute)
