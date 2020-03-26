@@ -113,7 +113,7 @@ exports.makeRoutes = (baseRoutes, {
       const shouldAddPrefix = (
         // No prefix if app uses different locale domains
         (!differentDomains ||
-          (differentDomains && !domainDefined && undefinedDomainStrategy === UNDEFINED_DOMAIN_STRATEGIES.PREFIX)) &&
+          (differentDomains && undefinedDomainStrategy === UNDEFINED_DOMAIN_STRATEGIES.PREFIX)) &&
         // No need to add prefix if child's path is relative
         !isChildWithRelativePath &&
         // Skip default locale if strategy is PREFIX_EXCEPT_DEFAULT
@@ -123,7 +123,9 @@ exports.makeRoutes = (baseRoutes, {
       if (shouldAddPrefix) {
         path = `/${locale}${path}`
       }
-
+      if (differentDomains && domainDefined) {
+        localizedRoute.redirect = '/'
+      }
       localizedRoute.path = path
 
       routes.push(localizedRoute)
