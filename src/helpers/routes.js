@@ -1,4 +1,4 @@
-const { STRATEGIES, LOCALE_CODE_KEY, LOCALE_DOMAIN_KEY, UNDEFINED_DOMAIN_STRATEGIES} = require('./constants')
+const { STRATEGIES, LOCALE_CODE_KEY, LOCALE_DOMAIN_KEY, UNDEFINED_DOMAIN_STRATEGIES } = require('./constants')
 const { extractComponentOptions } = require('./components')
 const { getPageOptions, getLocaleCodes } = require('./utils')
 
@@ -15,7 +15,7 @@ exports.makeRoutes = (baseRoutes, {
   pagesDir,
   differentDomains
 }) => {
-  let locale_objects = locales
+  const localeObjects = locales
   locales = getLocaleCodes(locales)
   let localizedRoutes = []
 
@@ -107,7 +107,7 @@ exports.makeRoutes = (baseRoutes, {
       }
 
       const isChildWithRelativePath = isChild && !path.startsWith('/')
-      const lang = locale_objects.find(l => l[LOCALE_CODE_KEY] === locale)
+      const lang = localeObjects.find(l => l[LOCALE_CODE_KEY] === locale)
       const domainDefined = LOCALE_DOMAIN_KEY in lang
       // Add route prefix if needed
       const shouldAddPrefix = (
@@ -121,18 +121,12 @@ exports.makeRoutes = (baseRoutes, {
       )
 
       if (differentDomains && domainDefined) {
-        if (path === '/') {
-          localizedRoute.redirect = path
-        } else {
-          localizedRoute.alias = `/${locale}${path}`
-        }
+        localizedRoute.alias = `/${locale}${path}`
       }
 
-      if (shouldAddPrefix && (!domainDefined || path === '/')) {
+      if (shouldAddPrefix && (!domainDefined)) {
         path = `/${locale}${path}`
       }
-
-
 
       localizedRoute.path = path
 
