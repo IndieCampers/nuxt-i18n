@@ -11,6 +11,7 @@ import {
   forwardedHost,
   lazy,
   localeCodes,
+  LOCALE_DOMAIN_KEY,
   locales,
   onLanguageSwitched,
   STRATEGIES,
@@ -132,25 +133,31 @@ export default async (context) => {
   }
 
   const hasDefaultPath = (i18n, locale) => {
-    return ("domain" in i18n.locales.find(l => l.code === locale) ||
-            locale === i18n.defaultLocale)
+    return hasDomain(i18n, locale) || locale === i18n.defaultLocale
+  }
+
+  const hasDomain = (i18n, locale) => {
+    return (LOCALE_DOMAIN_KEY in i18n.locales.find(l => l.code === locale))
   }
 
   const loadAndSetLocale = async (newLocale, { initialSetup = false } = {}) => {
     // Abort if different domains option enabled
+    const oldLocale = app.i18n.locale
+
+    if (!initialSetup && app.i18n.differentDomains && hasDomain(app.i18n, oldLocale) && !hasDefaultPath(app.i18n, newLocale)) {
+      redirect('/404')
+    }
 
     if (!initialSetup && app.i18n.differentDomains &&
-      ((hasDefaultPath(app.i18n, newLocale) && hasDefaultPath(app.i18n, app.i18n.locale)) ||
+      ((hasDefaultPath(app.i18n, newLocale) && hasDefaultPath(app.i18n, oldLocale)) ||
         undefinedDomainStrategy !== UNDEFINED_DOMAIN_STRATEGIES.PREFIX)) {
       return
     }
 
     // Abort if newLocale did not change
-    if (newLocale === app.i18n.locale) {
+    if (newLocale === oldLocale) {
       return
     }
-
-    const oldLocale = app.i18n.locale
 
     if (!initialSetup) {
       app.i18n.beforeLanguageSwitch(oldLocale, newLocale)
