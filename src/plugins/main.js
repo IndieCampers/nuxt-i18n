@@ -237,7 +237,7 @@ export default async (context) => {
         redirect('/404')
       }
     } else if (undefinedDomainStrategy === UNDEFINED_DOMAIN_STRATEGIES.PREFIX) {
-      if (!hasDefaultPath(app.i18n, routeLocale)) {
+      if (!hasDefaultPath(app.i18n, routeLocale || locale)) {
         locale = routeLocale || locale
       }
     }
