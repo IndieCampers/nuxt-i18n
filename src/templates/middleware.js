@@ -17,7 +17,7 @@ middleware.nuxti18n = async (context) => {
   const locale = app.i18n.locale || app.i18n.defaultLocale || null
   const routeLocale = getLocaleFromRoute(route)
 
-  if (app.i18n.differentDomains && defaultLanguagePathOnDomain(app, locale, routeLocale)) {
+  if (app.i18n.differentDomains && (domainLanguageMismatch(app, locale, routeLocale))) {
     redirect('/404')
   }
 
@@ -26,6 +26,17 @@ middleware.nuxti18n = async (context) => {
   }
 
   await app.i18n.setLocale(routeLocale || locale)
+}
+
+function domainLanguageMismatch (app, currentLocale, routeLocale) {
+  return domainLanguagePathOnDefault(app, currentLocale, routeLocale) ||
+          defaultLanguagePathOnDomain(app, currentLocale, routeLocale)
+}
+
+function domainLanguagePathOnDefault (app, currentLocale, routeLocale) {
+  const routeLocaleConfig = app.i18n.locales.find(l => l.code === routeLocale)
+  const routeIsOnCustomDomain = routeLocaleConfig && LOCALE_DOMAIN_KEY in routeLocaleConfig
+  return routeIsOnCustomDomain && currentLocale === app.i18n.defaultLocale
 }
 
 function defaultLanguagePathOnDomain (app, currentLocale, routeLocale) {
