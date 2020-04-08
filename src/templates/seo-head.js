@@ -71,7 +71,7 @@ function addHreflangLinks (locales, link) {
     link.push({
       hid: `alternate-hreflang-${iso}`,
       rel: 'alternate',
-      href: baseUrl + this.switchLocalePath(locale.code),
+      href: baseUrl + this.switchLocalePath(locale.code) + '/test',
       hreflang: iso
     })
   }
