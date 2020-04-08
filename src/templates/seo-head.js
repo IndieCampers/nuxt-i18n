@@ -38,7 +38,7 @@ export const nuxtI18nSeo = function () {
   addCanonicalLinks.bind(this)(currentLocale, metaObject.link)
   addCurrentOgLocale.bind(this)(currentLocale, currentLocaleIso, metaObject.meta)
   addAlternateOgLocales.bind(this)(this.$i18n.locales, currentLocaleIso, metaObject.meta)
-
+  console.log(metaObject)
   return metaObject
 }
 

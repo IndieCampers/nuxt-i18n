@@ -141,6 +141,7 @@ export default async (context) => {
   }
 
   const loadAndSetLocale = async (newLocale, { initialSetup = false } = {}) => {
+    console.log("newLocale " + newLocale)
     // Abort if different domains option enabled
     const oldLocale = app.i18n.locale
 
@@ -228,6 +229,7 @@ export default async (context) => {
 
   const domainLocale = getLocaleDomain(app.i18n, req)
   let locale = app.i18n.defaultLocale || null
+  console.log("route " + route)
   const routeLocale = getLocaleFromRoute(route)
 
   if (app.i18n.differentDomains) {
