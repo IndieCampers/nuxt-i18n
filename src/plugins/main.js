@@ -3,7 +3,6 @@ import JsCookie from 'js-cookie'
 import Vue from 'vue'
 import VueI18n from 'vue-i18n'
 import { nuxtI18nSeo } from './seo-head'
-import VueLogger from 'vuejs-logger';
 
 import {
   beforeLanguageSwitch,
@@ -40,9 +39,6 @@ const options = {
   separator: '|',
   showConsoleColors: true
 };
-
-Vue.use(VueLogger,options)
-
 
 Vue.use(VueI18n)
 
