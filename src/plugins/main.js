@@ -24,6 +24,7 @@ import {
 import {
   getLocaleDomain,
   getLocaleFromRoute,
+  correctDomainRoute,
   isSameRoute,
   syncVuex,
   validateRouteParams
@@ -34,6 +35,10 @@ Vue.use(VueI18n)
 /** @type {import('@nuxt/types').Plugin} */
 export default async (context) => {
   const { app, route, store, req, res, redirect } = context
+
+  if (req && differentDomains) {
+    route.name = correctDomainRoute(req, route.name, store, locales, defaultLocale)
+  }
 
   if (vuex && store) {
     // Register Vuex module
