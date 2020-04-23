@@ -150,6 +150,7 @@ export default async (context) => {
     const oldLocale = app.i18n.locale
 
     if (!initialSetup && app.i18n.differentDomains && hasDomain(app.i18n, oldLocale) && !hasDefaultPath(app.i18n, newLocale)) {
+      console.error("main 153")
       redirect('/404')
     }
 
@@ -239,6 +240,9 @@ export default async (context) => {
     if (domainLocale) {
       locale = domainLocale
       if (routeLocale && routeLocale !== locale) {
+        console.error("main 242")
+        console.error(route)
+        console.error(req)
         redirect('/404')
       }
     } else if (undefinedDomainStrategy === UNDEFINED_DOMAIN_STRATEGIES.PREFIX) {
