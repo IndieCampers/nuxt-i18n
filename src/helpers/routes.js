@@ -120,10 +120,6 @@ exports.makeRoutes = (baseRoutes, {
         !(locale === defaultLocale && strategy === STRATEGIES.PREFIX_EXCEPT_DEFAULT)
       )
 
-      if (differentDomains && domainDefined) {
-        localizedRoute.alias = `/${locale}${path}`
-      }
-
       if (shouldAddPrefix && (!differentDomains || !domainDefined)) {
         path = `/${locale}${path}`
       }
