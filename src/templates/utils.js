@@ -75,7 +75,8 @@ export const correctDomainRoute = (req, routeName, store, locales, defaultLocale
   const routes = store.$router.options.routes
   if (routes.filter(r => r.path === req.url).length > 1) {
     const requestDomain = req.headers.host;
-    const domainLocaleCode = locales.find(l => l.domain === requestDomain).code || defaultLocale
+    const foundDomain = locales.find(l => l.domain === requestDomain)
+    const domainLocaleCode = foundDomain ? foundDomain.code : defaultLocale
     const prefix = routeName.substring(0, routeName.indexOf('___') + 3)
     routeName = `${prefix}${domainLocaleCode}`
   }
