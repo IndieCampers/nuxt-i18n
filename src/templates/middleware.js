@@ -1,12 +1,16 @@
 import middleware from '../middleware'
 import { detectBrowserLanguage, rootRedirect, LOCALE_DOMAIN_KEY } from './options'
-import { getLocaleFromRoute } from './utils'
+import { getLocaleFromRoute, correctDomainRoute } from './utils'
 
 middleware.nuxti18n = async (context) => {
   const { app, route, redirect, isHMR } = context
 
   if (isHMR) {
     return
+  }
+
+  if (typeof window !== "undefined") {
+    route.name = correctDomainRoute(route.path, window.location.host, route.name, app.store, app.i18n.locales, app.i18n.defaultLocale)
   }
 
   // Handle root path redirect

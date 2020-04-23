@@ -37,7 +37,7 @@ export default async (context) => {
   const { app, route, store, req, res, redirect } = context
 
   if (req && differentDomains) {
-    route.name = correctDomainRoute(req, route.name, store, locales, defaultLocale)
+    route.name = correctDomainRoute(req.url, req.headers.host, route.name, store, locales, defaultLocale)
   }
 
   if (vuex && store) {
