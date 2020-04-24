@@ -71,9 +71,11 @@ export const validateRouteParams = routeParams => {
 }
 
 
-export const correctDomainRoute = (path, domain, routeName, store, locales, defaultLocale) => {
+export const correctDomainRoute = (domain, routeName, store, locales, defaultLocale) => {
   const routes = store.$router.options.routes
-  if (routes.filter(r => r.path === path).length > 1) {
+  const matchingRoute = routes.find(r => r.name === routeName)
+  const purePath = matchingRoute ? matchingRoute.path : null
+  if (matchingRoute && routes.filter(r => r.path === purePath).length > 1) {
     const foundDomain = locales.find(l => l.domain === domain)
     const domainLocaleCode = foundDomain ? foundDomain.code : defaultLocale
     const prefix = routeName.substring(0, routeName.indexOf('___') + 3)

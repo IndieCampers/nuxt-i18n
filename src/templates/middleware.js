@@ -10,7 +10,7 @@ middleware.nuxti18n = async (context) => {
   }
 
   if (typeof window !== "undefined") {
-    route.name = correctDomainRoute(route.path, window.location.host, route.name, app.store, app.i18n.locales, app.i18n.defaultLocale)
+    route.name = correctDomainRoute(window.location.host, route.name, app.store, app.i18n.locales, app.i18n.defaultLocale)
   }
 
   // Handle root path redirect
