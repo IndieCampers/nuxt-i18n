@@ -151,7 +151,7 @@ export default async (context) => {
     const oldLocale = app.i18n.locale
 
     if (!initialSetup && app.i18n.differentDomains && hasDomain(app.i18n, oldLocale) && !hasDefaultPath(app.i18n, newLocale)) {
-      error({statusCode: 404, message: 'not found'})
+      app.error({statusCode: 404, message: 'not found'})
     }
 
     if (!initialSetup && app.i18n.differentDomains &&
@@ -240,7 +240,7 @@ export default async (context) => {
     if (domainLocale) {
       locale = domainLocale
       if (routeLocale && routeLocale !== locale) {
-        redirect('/404')
+        app.error({statusCode: 404, message: 'not found'})
       }
     } else if (undefinedDomainStrategy === UNDEFINED_DOMAIN_STRATEGIES.PREFIX) {
       if (!hasDefaultPath(app.i18n, routeLocale || locale)) {
