@@ -151,7 +151,7 @@ export default async (context) => {
     const oldLocale = app.i18n.locale
 
     if (!initialSetup && app.i18n.differentDomains && hasDomain(app.i18n, oldLocale) && !hasDefaultPath(app.i18n, newLocale)) {
-      redirect('/404')
+      error({statusCode: 404, message: 'not found'})
     }
 
     if (!initialSetup && app.i18n.differentDomains &&
